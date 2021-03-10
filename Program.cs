@@ -50,25 +50,25 @@ namespace MyTest
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            foreach (OneRecord _or in AllListRecord)
+            foreach (OneRecord oneRecord in AllListRecord)
             {
-                stringBuilder.Append($"{_or.OneString } {_or.OneDigitf } \n");
+                stringBuilder.Append($"{oneRecord.OneString } {oneRecord.OneDigitf } \n");
             }
             return stringBuilder.ToString();
         }
-        public SaveInFile Load()
+        public SaveInFile Load(string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fileStream = new FileStream(@"g:\test.txt", FileMode.Open))
+            using (FileStream fileStream = new FileStream(path, FileMode.Open))
             {
                 return (SaveInFile)formatter.Deserialize(fileStream);
             }
 
         }
-        public void Save()
+        public void Save(string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fileStream = new FileStream(@"g:\test.txt", FileMode.Create))
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
             {
                 formatter.Serialize(fileStream, this);
                 fileStream.Close();
@@ -81,12 +81,13 @@ namespace MyTest
     {
         static void Main(string[] args)
         {
+            string path = @"g:\test.txt";
             SaveInFile test = new SaveInFile();
             test.AddList("one", 1.1f);
             test.AddList(new OneRecord("two", 2.2f));
             test.AddList("ten", 10.23f);
-            test.Save();
-            Console.WriteLine(test.Load().ToString());
+            test.Save(path);
+            Console.WriteLine(test.Load(path).ToString());
 
             
             
